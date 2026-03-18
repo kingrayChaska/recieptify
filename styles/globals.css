@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-syne: 'Syne', sans-serif;
+    --font-dm-mono: 'DM Mono', monospace;
+    --bg: #fafafa;
+    --bg-card: #ffffff;
+    --text: #0f0f0f;
+    --text-muted: #6b7280;
+    --border: #e5e7eb;
+    --brand: #22c55e;
+    --brand-dark: #15803d;
+  }
+
+  .dark {
+    --bg: #0a0a0a;
+    --bg-card: #141414;
+    --text: #f5f5f5;
+    --text-muted: #9ca3af;
+    --border: #1f1f1f;
+    --brand: #22c55e;
+    --brand-dark: #4ade80;
+  }
+
+  * {
+    @apply border-[var(--border)];
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-syne);
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+@layer utilities {
+  .text-muted { color: var(--text-muted); }
+  .bg-card { background-color: var(--bg-card); }
+  .bg-base { background-color: var(--bg); }
+  .border-base { border-color: var(--border); }
+
+  .scrollbar-thin::-webkit-scrollbar { width: 4px; }
+  .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+  .scrollbar-thin::-webkit-scrollbar-thumb { background: var(--border); border-radius: 9999px; }
+}
