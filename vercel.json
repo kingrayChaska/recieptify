@@ -1,7 +1,6 @@
 {
   "framework": "nextjs",
   "buildCommand": "npm run build",
-  "ignoreCommand": "exit 1",
   "devCommand": "npm run dev",
   "installCommand": "npm install",
   "outputDirectory": ".next",
@@ -27,12 +26,6 @@
           "value": "strict-origin-when-cross-origin"
         }
       ]
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/share/:token",
-      "destination": "/share/:token"
     }
   ]
 }
