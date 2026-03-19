@@ -22,10 +22,34 @@ export default async function DashboardPage() {
   }, 0);
 
   const stats = [
-    { label: "Total Invoices", value: invoiceCount, icon: FileText, color: "text-blue-500", bg: "bg-blue-500/10" },
-    { label: "Total Receipts", value: receiptCount, icon: Receipt, color: "text-purple-500", bg: "bg-purple-500/10" },
-    { label: "Total Revenue", value: formatCurrency(totalRevenue), icon: TrendingUp, color: "text-[var(--brand)]", bg: "bg-[var(--brand)]/10" },
-    { label: "Documents", value: allDocs.length, icon: Clock, color: "text-orange-500", bg: "bg-orange-500/10" },
+    {
+      label: "Total Invoices",
+      value: invoiceCount,
+      icon: FileText,
+      color: "text-blue-500",
+      bg: "bg-blue-500/10",
+    },
+    {
+      label: "Total Receipts",
+      value: receiptCount,
+      icon: Receipt,
+      color: "text-purple-500",
+      bg: "bg-purple-500/10",
+    },
+    {
+      label: "Total Revenue",
+      value: formatCurrency(totalRevenue),
+      icon: TrendingUp,
+      color: "text-[var(--brand)]",
+      bg: "bg-[var(--brand)]/10",
+    },
+    {
+      label: "Documents",
+      value: allDocs.length,
+      icon: Clock,
+      color: "text-orange-500",
+      bg: "bg-orange-500/10",
+    },
   ];
 
   return (
@@ -35,12 +59,19 @@ export default async function DashboardPage() {
         {/* Stats */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {stats.map(({ label, value, icon: Icon, color, bg }) => (
-            <div key={label} className="bg-card border border-[var(--border)] rounded-2xl p-5">
-              <div className={`w-9 h-9 rounded-xl ${bg} flex items-center justify-center mb-3`}>
+            <div
+              key={label}
+              className="bg-card border border-[var(--border)] rounded-2xl p-5 overflow-hidden"
+            >
+              <div
+                className={`w-9 h-9 rounded-xl ${bg} flex items-center justify-center mb-3`}
+              >
                 <Icon className={`w-4 h-4 ${color}`} />
               </div>
-              <div className="text-2xl font-extrabold">{value}</div>
-              <div className="text-xs text-muted mt-0.5">{label}</div>
+              <div className="text-xl font-extrabold truncate leading-tight">
+                {value}
+              </div>
+              <div className="text-xs text-muted mt-0.5 truncate">{label}</div>
             </div>
           ))}
         </div>
@@ -55,7 +86,9 @@ export default async function DashboardPage() {
               <FileText className="w-5 h-5 text-[var(--brand)]" />
             </div>
             <h3 className="font-bold mb-1">New Invoice</h3>
-            <p className="text-sm text-muted">Create a professional invoice with custom layout</p>
+            <p className="text-sm text-muted">
+              Create a professional invoice with custom layout
+            </p>
           </Link>
           <Link
             href="/receipt/new"
@@ -65,7 +98,9 @@ export default async function DashboardPage() {
               <Receipt className="w-5 h-5 text-purple-500" />
             </div>
             <h3 className="font-bold mb-1">New Receipt</h3>
-            <p className="text-sm text-muted">Generate a payment receipt instantly</p>
+            <p className="text-sm text-muted">
+              Generate a payment receipt instantly
+            </p>
           </Link>
         </div>
 
@@ -74,25 +109,43 @@ export default async function DashboardPage() {
           <div>
             <div className="flex items-center justify-between mb-4">
               <h2 className="font-bold text-base">Recent Documents</h2>
-              <Link href="/dashboard/invoices" className="text-xs text-[var(--brand)] hover:underline">View all</Link>
+              <Link
+                href="/dashboard/invoices"
+                className="text-xs text-[var(--brand)] hover:underline"
+              >
+                View all
+              </Link>
             </div>
             <div className="bg-card border border-[var(--border)] rounded-2xl divide-y divide-[var(--border)]">
               {allDocs.map((doc) => {
                 const data = doc.data as DocumentData;
                 return (
-                  <div key={doc.id} className="flex items-center justify-between px-5 py-4">
+                  <div
+                    key={doc.id}
+                    className="flex items-center justify-between px-5 py-4"
+                  >
                     <div className="flex items-center gap-3">
-                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold ${doc.type === "invoice" ? "bg-blue-500/10 text-blue-500" : "bg-purple-500/10 text-purple-500"}`}>
+                      <div
+                        className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold ${doc.type === "invoice" ? "bg-blue-500/10 text-blue-500" : "bg-purple-500/10 text-purple-500"}`}
+                      >
                         {doc.type === "invoice" ? "INV" : "REC"}
                       </div>
                       <div>
-                        <p className="text-sm font-semibold">{data.customerName}</p>
-                        <p className="text-xs text-muted">{data.documentNumber}</p>
+                        <p className="text-sm font-semibold">
+                          {data.customerName}
+                        </p>
+                        <p className="text-xs text-muted">
+                          {data.documentNumber}
+                        </p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-sm font-bold">{formatCurrency(data.total, data.currency)}</p>
-                      <p className="text-xs text-muted">{formatDate(doc.created_at)}</p>
+                      <p className="text-sm font-bold">
+                        {formatCurrency(data.total, data.currency)}
+                      </p>
+                      <p className="text-xs text-muted">
+                        {formatDate(doc.created_at)}
+                      </p>
                     </div>
                   </div>
                 );

@@ -1,3 +1,18 @@
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json }
+  | Json[];
+
+export interface LineItem {
+  id: string;
+  name: string;
+  quantity: number;
+  price: number;
+}
+
 export interface DocumentData {
   documentNumber: string;
   businessName: string;
@@ -17,5 +32,5 @@ export interface DocumentData {
   paymentStatus: "paid" | "unpaid" | "partial";
   paymentMethod?: string;
   notes?: string;
-  currency: string; // ✅ FIXED
+  currency: string;
 }
