@@ -2,10 +2,20 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { createClient } from "@/lib/supabase/client";
-import type { Database, DocumentData } from "@/lib/supabase/types";
+import type { DocumentData } from "@/lib/supabase/types";
 import { generateShareToken } from "@/lib/utils";
 
-type Document = Database["public"]["Tables"]["documents"]["Row"];
+type Document = {
+  id: string;
+  user_id: string;
+  type: "invoice" | "receipt";
+  data: DocumentData;
+  logo_url: string | null;
+  share_token: string | null;
+  template: "minimal" | "modern" | "classic";
+  created_at: string;
+  updated_at: string;
+};
 
 export const useDocuments = () => {
   const [documents, setDocuments] = useState<Document[]>([]);
@@ -23,7 +33,7 @@ export const useDocuments = () => {
     if (error) {
       setError(error.message);
     } else {
-      setDocuments(data || []);
+      setDocuments((data as Document[]) || []);
     }
     setLoading(false);
   }, [supabase]);
@@ -36,7 +46,7 @@ export const useDocuments = () => {
     type: "invoice" | "receipt",
     data: DocumentData,
     logoUrl: string | null,
-    template: "minimal" | "modern" | "classic"
+    template: "minimal" | "modern" | "classic",
   ) => {
     const {
       data: { user },
@@ -51,8 +61,8 @@ export const useDocuments = () => {
       .single();
 
     if (error) throw error;
-    setDocuments((prev) => [doc, ...prev]);
-    return doc;
+    setDocuments((prev) => [doc as Document, ...prev]);
+    return doc as Document;
   };
 
   const deleteDocument = async (id: string) => {
@@ -71,7 +81,9 @@ export const useDocuments = () => {
       .single();
 
     if (error) throw error;
-    setDocuments((prev) => prev.map((d) => (d.id === id ? data : d)));
+    setDocuments((prev) =>
+      prev.map((d) => (d.id === id ? (data as Document) : d)),
+    );
     return `${process.env.NEXT_PUBLIC_APP_URL}/share/${token}`;
   };
 
