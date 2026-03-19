@@ -1,14 +1,23 @@
 "use client";
 
 import { useState } from "react";
-import { Download, Trash2, Share2, Search, Filter, Eye } from "lucide-react";
-import { formatCurrency, formatDate } from "@/lib/utils";
+import { Download, Trash2, Share2, Search, Filter } from "lucide-react";
+import { formatCurrency, formatDate, cn } from "@/lib/utils";
 import { downloadPDF } from "@/lib/pdf";
 import { useDocuments } from "@/hooks/useDocuments";
-import type { Database, DocumentData } from "@/lib/supabase/types";
-import { cn } from "@/lib/utils";
+import type { DocumentData } from "@/lib/supabase/types";
 
-type Document = Database["public"]["Tables"]["documents"]["Row"];
+type Document = {
+  id: string;
+  user_id: string;
+  type: "invoice" | "receipt";
+  data: DocumentData;
+  logo_url: string | null;
+  share_token: string | null;
+  template: "minimal" | "modern" | "classic";
+  created_at: string;
+  updated_at: string;
+};
 
 interface DocumentListProps {
   type?: "invoice" | "receipt";
@@ -21,14 +30,20 @@ const StatusBadge = ({ status }: { status: string }) => {
     partial: "bg-yellow-500/10 text-yellow-600 dark:text-yellow-400",
   };
   return (
-    <span className={cn("px-2 py-0.5 rounded-full text-xs font-semibold capitalize", styles[status] ?? "bg-gray-100 text-gray-600")}>
+    <span
+      className={cn(
+        "px-2 py-0.5 rounded-full text-xs font-semibold capitalize",
+        styles[status] ?? "bg-gray-100 text-gray-600",
+      )}
+    >
       {status}
     </span>
   );
 };
 
 export const DocumentList = ({ type }: DocumentListProps) => {
-  const { documents, loading, deleteDocument, generateShareLink } = useDocuments();
+  const { documents, loading, deleteDocument, generateShareLink } =
+    useDocuments();
   const [search, setSearch] = useState("");
   const [copied, setCopied] = useState<string | null>(null);
   const [deleting, setDeleting] = useState<string | null>(null);
@@ -76,7 +91,10 @@ export const DocumentList = ({ type }: DocumentListProps) => {
     return (
       <div className="space-y-3">
         {[...Array(3)].map((_, i) => (
-          <div key={i} className="bg-card border border-[var(--border)] rounded-2xl h-20 animate-pulse" />
+          <div
+            key={i}
+            className="bg-card border border-[var(--border)] rounded-2xl h-20 animate-pulse"
+          />
         ))}
       </div>
     );
@@ -106,34 +124,51 @@ export const DocumentList = ({ type }: DocumentListProps) => {
         <div className="text-center py-16 text-muted">
           <div className="text-4xl mb-3">📄</div>
           <p className="font-semibold">No documents found</p>
-          <p className="text-sm mt-1">Create your first {type ?? "document"} to get started</p>
+          <p className="text-sm mt-1">
+            Create your first {type ?? "document"} to get started
+          </p>
         </div>
       ) : (
         <div className="bg-card border border-[var(--border)] rounded-2xl divide-y divide-[var(--border)]">
           {filtered.map((doc) => {
             const data = doc.data as DocumentData;
             return (
-              <div key={doc.id} className="flex items-center justify-between px-5 py-4 hover:bg-[var(--bg)] transition-colors">
+              <div
+                key={doc.id}
+                className="flex items-center justify-between px-5 py-4 hover:bg-[var(--bg)] transition-colors"
+              >
                 <div className="flex items-center gap-4 min-w-0">
-                  <div className={cn(
-                    "w-9 h-9 rounded-xl flex items-center justify-center text-xs font-bold shrink-0",
-                    doc.type === "invoice" ? "bg-blue-500/10 text-blue-500" : "bg-purple-500/10 text-purple-500"
-                  )}>
+                  <div
+                    className={cn(
+                      "w-9 h-9 rounded-xl flex items-center justify-center text-xs font-bold shrink-0",
+                      doc.type === "invoice"
+                        ? "bg-blue-500/10 text-blue-500"
+                        : "bg-purple-500/10 text-purple-500",
+                    )}
+                  >
                     {doc.type === "invoice" ? "INV" : "REC"}
                   </div>
                   <div className="min-w-0">
-                    <p className="text-sm font-bold truncate">{data.customerName}</p>
+                    <p className="text-sm font-bold truncate">
+                      {data.customerName}
+                    </p>
                     <div className="flex items-center gap-2 mt-0.5">
-                      <span className="text-xs text-muted font-mono">{data.documentNumber}</span>
+                      <span className="text-xs text-muted font-mono">
+                        {data.documentNumber}
+                      </span>
                       <span className="text-muted text-xs">·</span>
-                      <span className="text-xs text-muted">{formatDate(doc.created_at)}</span>
+                      <span className="text-xs text-muted">
+                        {formatDate(doc.created_at)}
+                      </span>
                     </div>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-4 shrink-0">
                   <div className="hidden md:block text-right">
-                    <p className="text-sm font-extrabold">{formatCurrency(data.total, data.currency)}</p>
+                    <p className="text-sm font-extrabold">
+                      {formatCurrency(data.total, data.currency)}
+                    </p>
                     <StatusBadge status={data.paymentStatus} />
                   </div>
 
@@ -152,7 +187,7 @@ export const DocumentList = ({ type }: DocumentListProps) => {
                         "p-2 rounded-lg transition-all",
                         copied === doc.id
                           ? "text-[var(--brand)]"
-                          : "text-muted hover:text-[var(--text)] hover:bg-[var(--border)]"
+                          : "text-muted hover:text-[var(--text)] hover:bg-[var(--border)]",
                       )}
                     >
                       <Share2 className="w-4 h-4" />
