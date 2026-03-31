@@ -12,36 +12,31 @@ export const updateSession = async (request: NextRequest) => {
         getAll() {
           return request.cookies.getAll();
         },
-        setAll(
-          cookiesToSet: {
-            name: string;
-            value: string;
-            options?: Record<string, unknown>;
-          }[],
-        ) {
+        setAll(cookiesToSet: { name: string; value: string; options?: Record<string, unknown> }[]) {
           cookiesToSet.forEach(({ name, value }) =>
-            request.cookies.set(name, value),
+            request.cookies.set(name, value)
           );
           supabaseResponse = NextResponse.next({ request });
           cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(
-              name,
-              value,
-              options as Parameters<typeof supabaseResponse.cookies.set>[2],
-            ),
+            supabaseResponse.cookies.set(name, value, options as Parameters<typeof supabaseResponse.cookies.set>[2])
           );
         },
       },
-    },
+    }
   );
+
+  // Skip auth for API routes (they use API key auth)
+  if (request.nextUrl.pathname.startsWith("/api/")) {
+    return supabaseResponse;
+  }
 
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const protectedRoutes = ["/dashboard", "/invoice", "/receipt"];
+  const protectedRoutes = ["/dashboard", "/invoice", "/receipt", "/receipts", "/insights", "/organization"];
   const isProtected = protectedRoutes.some((route) =>
-    request.nextUrl.pathname.startsWith(route),
+    request.nextUrl.pathname.startsWith(route)
   );
 
   if (isProtected && !user) {
