@@ -1,10 +1,9 @@
 import { Sidebar } from "@/components/layout/Sidebar";
-import { Topbar } from "@/components/layout/Topbar";
 import { ReceiptForm } from "@/components/receipts/ReceiptForm";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
-export default function NewReceiptExpensePage() {
+export default function NewReceiptPage() {
   return (
     <div className="flex h-screen overflow-hidden bg-base">
       <Sidebar />
@@ -13,7 +12,7 @@ export default function NewReceiptExpensePage() {
           <Link href="/receipts" className="p-1.5 rounded-lg hover:bg-[var(--bg-card)] text-muted transition-colors">
             <ArrowLeft className="w-4 h-4" />
           </Link>
-          <h1 className="font-extrabold text-lg">Add Receipt</h1>
+          <h1 className="font-extrabold text-lg">New Receipt</h1>
         </header>
         <div className="flex-1 overflow-y-auto p-6">
           <ReceiptForm />

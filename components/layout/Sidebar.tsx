@@ -8,7 +8,7 @@ import {
   TrendingUp, Building2, Key, ScanLine,
 } from "lucide-react";
 import { useTheme } from "next-themes";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -44,6 +44,8 @@ export const Sidebar = () => {
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
   const router = useRouter();
   const supabase = createClient();
 
@@ -111,8 +113,8 @@ export const Sidebar = () => {
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
           className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-sm font-medium text-muted hover:text-[var(--text)] hover:bg-[var(--bg-card)] transition-all"
         >
-          {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-          {theme === "dark" ? "Light mode" : "Dark mode"}
+          {mounted && (theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />)}
+          {mounted && (theme === "dark" ? "Light mode" : "Dark mode")}
         </button>
         <button
           onClick={handleSignOut}

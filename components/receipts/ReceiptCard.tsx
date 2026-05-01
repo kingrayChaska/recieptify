@@ -1,18 +1,28 @@
 "use client";
 
-import { Trash2, ExternalLink } from "lucide-react";
+import { Trash2, ExternalLink, Download, Share2, Check } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
 import { formatNaira, formatDateShort, CATEGORY_ICONS, CATEGORY_COLORS, cn } from "@/lib/utils";
 import type { Receipt, ReceiptCategory } from "@/lib/supabase/types";
+import { downloadReceiptPdf } from "@/lib/receipt-pdf";
 
 interface ReceiptCardProps {
   receipt: Receipt;
   onDelete: (id: string) => void;
+  onShare: (id: string) => Promise<string>;
 }
 
-export const ReceiptCard = ({ receipt, onDelete }: ReceiptCardProps) => {
+export const ReceiptCard = ({ receipt, onDelete, onShare }: ReceiptCardProps) => {
   const icon = CATEGORY_ICONS[receipt.category as ReceiptCategory] ?? "📄";
   const color = CATEGORY_COLORS[receipt.category as ReceiptCategory] ?? "#9ca3af";
+  const [copied, setCopied] = useState(false);
+
+  const handleShare = async () => {
+    await onShare(receipt.id);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
     <div className="flex items-center justify-between px-5 py-4 hover:bg-[var(--bg)] transition-colors group">
@@ -44,6 +54,20 @@ export const ReceiptCard = ({ receipt, onDelete }: ReceiptCardProps) => {
       <div className="flex items-center gap-3 shrink-0">
         <p className="text-sm font-extrabold">{formatNaira(receipt.amount ?? 0)}</p>
         <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+          <button
+            onClick={() => downloadReceiptPdf(receipt)}
+            title="Download PDF"
+            className="p-1.5 rounded-lg text-muted hover:text-[var(--text)] hover:bg-[var(--border)] transition-all"
+          >
+            <Download className="w-3.5 h-3.5" />
+          </button>
+          <button
+            onClick={handleShare}
+            title={copied ? "Link copied!" : "Copy share link"}
+            className={cn("p-1.5 rounded-lg transition-all", copied ? "text-green-500" : "text-muted hover:text-[var(--text)] hover:bg-[var(--border)]")}
+          >
+            {copied ? <Check className="w-3.5 h-3.5" /> : <Share2 className="w-3.5 h-3.5" />}
+          </button>
           <Link
             href={`/receipts/${receipt.id}`}
             className="p-1.5 rounded-lg text-muted hover:text-[var(--text)] hover:bg-[var(--border)] transition-all"

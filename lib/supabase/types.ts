@@ -42,6 +42,29 @@ export type ReceiptCategory =
   | "Uncategorized";
 
 export type ReceiptSource = "upload" | "manual" | "bank_alert" | "api";
+export type ReceiptTemplate = "modern" | "minimal" | "classic";
+
+export interface ReceiptItem {
+  id: string;
+  name: string;
+  quantity: number;
+  price: number;
+}
+
+export interface ReceiptTemplateData {
+  receiptId: string;
+  businessName: string;
+  businessEmail?: string;
+  businessAddress?: string;
+  customerName?: string;
+  items: ReceiptItem[];
+  subtotal: number;
+  total: number;
+  date: string;
+  logoUrl?: string;
+  notes?: string;
+  currency: string;
+}
 
 export interface Receipt {
   id: string;
@@ -58,6 +81,7 @@ export interface Receipt {
   source: ReceiptSource;
   notes: string | null;
   organization_id: string | null;
+  share_token: string | null;
   created_at: string;
   updated_at: string;
 }

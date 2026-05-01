@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { generateShareToken } from "@/lib/utils";
 import type { Receipt, ReceiptCategory, ReceiptSource } from "@/lib/supabase/types";
 
 export interface CreateReceiptPayload {
@@ -90,6 +91,16 @@ export const useReceipts = (organizationId?: string) => {
     setReceipts((prev) => prev.filter((r) => r.id !== id));
   };
 
+  const shareReceipt = async (id: string): Promise<string> => {
+    const token = generateShareToken();
+    const { error } = await supabase.from("receipts").update({ share_token: token }).eq("id", id);
+    if (error) throw error;
+    setReceipts((prev) => prev.map((r) => r.id === id ? { ...r, share_token: token } : r));
+    const url = `${process.env.NEXT_PUBLIC_APP_URL}/share/receipt/${token}`;
+    await navigator.clipboard.writeText(url);
+    return url;
+  };
+
   const uploadImage = async (file: File): Promise<string> => {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) throw new Error("Not authenticated");
@@ -127,7 +138,7 @@ export const useReceipts = (organizationId?: string) => {
 
   return {
     receipts, loading, error,
-    fetchReceipts, createReceipt, updateReceipt, deleteReceipt, uploadImage,
+    fetchReceipts, createReceipt, updateReceipt, deleteReceipt, uploadImage, shareReceipt,
     analytics: { totalSpend, monthlySpend, byCategory, byMonth, count: receipts.length, thisMonthCount: thisMonth.length },
   };
 };

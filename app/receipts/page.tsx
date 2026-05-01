@@ -11,7 +11,7 @@ import { RECEIPT_CATEGORIES, cn } from "@/lib/utils";
 import type { ReceiptCategory } from "@/lib/supabase/types";
 
 export default function ReceiptsPage() {
-  const { receipts, loading, deleteReceipt } = useReceipts();
+  const { receipts, loading, deleteReceipt, shareReceipt } = useReceipts();
   const [search, setSearch] = useState("");
   const [filterCat, setFilterCat] = useState<ReceiptCategory | "All">("All");
 
@@ -96,6 +96,7 @@ export default function ReceiptsPage() {
                   key={receipt.id}
                   receipt={receipt}
                   onDelete={deleteReceipt}
+                  onShare={shareReceipt}
                 />
               ))}
             </div>
