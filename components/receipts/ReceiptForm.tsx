@@ -151,6 +151,8 @@ export const ReceiptForm = () => {
                     className="w-full h-full object-contain"
                   />
                   <button
+                    type="button"
+                    title="Remove logo"
                     onClick={() => {
                       setLogoFile(null);
                       setLogoPreview("");
@@ -166,6 +168,8 @@ export const ReceiptForm = () => {
                   <input
                     type="file"
                     accept="image/*"
+                    aria-label="Upload logo"
+                    title="Upload logo"
                     className="hidden"
                     onChange={handleLogo}
                   />
@@ -216,8 +220,11 @@ export const ReceiptForm = () => {
               />
             </div>
             <div>
-              <label className={labelCls}>Date</label>
+              <label htmlFor="receipt-date" className={labelCls}>
+                Date
+              </label>
               <input
+                id="receipt-date"
                 type="date"
                 value={form.date}
                 onChange={(e) => set("date", e.target.value)}
@@ -225,8 +232,11 @@ export const ReceiptForm = () => {
               />
             </div>
             <div>
-              <label className={labelCls}>Category</label>
+              <label htmlFor="receipt-category" className={labelCls}>
+                Category
+              </label>
               <select
+                id="receipt-category"
                 value={form.category}
                 onChange={(e) => set("category", e.target.value)}
                 className={inputCls}
@@ -244,6 +254,7 @@ export const ReceiptForm = () => {
           <div className="flex items-center justify-between">
             <h3 className="font-bold text-sm">Items</h3>
             <button
+              type="button"
               onClick={addItem}
               className="flex items-center gap-1 text-xs font-semibold text-[var(--brand)] hover:opacity-80 transition-opacity"
             >
@@ -268,6 +279,7 @@ export const ReceiptForm = () => {
                   value={item.name}
                   onChange={(e) => setItem(item.id, "name", e.target.value)}
                   placeholder="Item name"
+                  aria-label="Item name"
                   className={cn(inputCls, "col-span-5 py-2")}
                 />
                 <input
@@ -277,6 +289,8 @@ export const ReceiptForm = () => {
                   onChange={(e) =>
                     setItem(item.id, "quantity", parseInt(e.target.value) || 1)
                   }
+                  aria-label="Item quantity"
+                  title="Quantity"
                   className={cn(inputCls, "col-span-2 py-2 text-center")}
                 />
                 <input
@@ -287,9 +301,12 @@ export const ReceiptForm = () => {
                     setItem(item.id, "price", parseFloat(e.target.value) || 0)
                   }
                   placeholder="0"
+                  aria-label="Item price"
                   className={cn(inputCls, "col-span-3 py-2 text-right")}
                 />
                 <button
+                  type="button"
+                  title="Remove item"
                   onClick={() => removeItem(item.id)}
                   disabled={items.length === 1}
                   className="col-span-2 flex justify-center p-1.5 rounded-lg text-muted hover:text-red-500 hover:bg-red-500/5 transition-all disabled:opacity-20"
@@ -337,6 +354,7 @@ export const ReceiptForm = () => {
         </div>
 
         <button
+          type="button"
           onClick={handleSave}
           disabled={
             saving || (!form.businessName && items.every((i) => !i.name))
