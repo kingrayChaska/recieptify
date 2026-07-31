@@ -135,9 +135,9 @@ export const DocumentList = ({ type }: DocumentListProps) => {
             return (
               <div
                 key={doc.id}
-                className="flex items-center justify-between px-5 py-4 hover:bg-[var(--bg)] transition-colors"
+                className="flex items-center justify-between gap-3 px-3 sm:px-5 py-4 hover:bg-[var(--bg)] transition-colors"
               >
-                <div className="flex items-center gap-4 min-w-0">
+                <div className="flex items-center gap-3 sm:gap-4 min-w-0">
                   <div
                     className={cn(
                       "w-9 h-9 rounded-xl flex items-center justify-center text-xs font-bold shrink-0",
@@ -152,19 +152,19 @@ export const DocumentList = ({ type }: DocumentListProps) => {
                     <p className="text-sm font-bold truncate">
                       {data.customerName}
                     </p>
-                    <div className="flex items-center gap-2 mt-0.5">
-                      <span className="text-xs text-muted font-mono">
+                    <div className="flex items-center gap-2 mt-0.5 min-w-0">
+                      <span className="text-xs text-muted font-mono truncate">
                         {data.documentNumber}
                       </span>
-                      <span className="text-muted text-xs">·</span>
-                      <span className="text-xs text-muted">
+                      <span className="text-muted text-xs shrink-0">·</span>
+                      <span className="text-xs text-muted shrink-0">
                         {formatDate(doc.created_at)}
                       </span>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4 shrink-0">
+                <div className="flex items-center gap-2 sm:gap-4 shrink-0">
                   <div className="hidden md:block text-right">
                     <p className="text-sm font-extrabold">
                       {formatCurrency(data.total, data.currency)}
@@ -172,7 +172,7 @@ export const DocumentList = ({ type }: DocumentListProps) => {
                     <StatusBadge status={data.paymentStatus} />
                   </div>
 
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-0.5 sm:gap-1">
                     <button
                       onClick={() => handleDownload(doc)}
                       title="Download PDF"

@@ -20,20 +20,20 @@ export const Topbar = ({ title }: TopbarProps) => {
   }, [supabase]);
 
   return (
-    <header className="sticky top-0 z-20 bg-[var(--bg)]/80 backdrop-blur border-b border-[var(--border)] px-6 py-4 flex items-center justify-between">
-      <h1 className="font-extrabold text-xl tracking-tight">{title}</h1>
-      <div className="flex items-center gap-3">
+    <header className="sticky top-0 z-20 bg-[var(--bg)]/80 backdrop-blur border-b border-[var(--border)] pl-16 pr-4 md:pl-6 md:pr-6 py-4 flex items-center justify-between gap-3">
+      <h1 className="font-extrabold text-lg sm:text-xl tracking-tight truncate min-w-0">{title}</h1>
+      <div className="flex items-center gap-2 sm:gap-3 shrink-0">
         <button className="p-2 rounded-xl hover:bg-[var(--bg-card)] transition-colors text-muted">
           <Bell className="w-4 h-4" />
         </button>
         <Link
           href="/dashboard/settings"
-          className="flex items-center gap-2 bg-[var(--bg-card)] border border-[var(--border)] px-3 py-1.5 rounded-xl text-sm hover:border-[var(--brand)] transition-colors"
+          className="flex items-center gap-2 bg-[var(--bg-card)] border border-[var(--border)] px-2.5 sm:px-3 py-1.5 rounded-xl text-sm hover:border-[var(--brand)] transition-colors"
         >
-          <div className="w-6 h-6 rounded-full bg-[var(--brand)]/20 flex items-center justify-center">
+          <div className="w-6 h-6 rounded-full bg-[var(--brand)]/20 flex items-center justify-center shrink-0">
             <User className="w-3 h-3 text-[var(--brand)]" />
           </div>
-          <span className="text-xs font-medium max-w-[120px] truncate">{email ?? "Account"}</span>
+          <span className="hidden sm:inline text-xs font-medium max-w-[120px] truncate">{email ?? "Account"}</span>
         </Link>
       </div>
     </header>
