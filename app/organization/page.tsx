@@ -105,7 +105,15 @@ export default function OrganizationPage() {
 
     const {
       data: { user },
+      error: userError,
     } = await supabase.auth.getUser();
+
+    if (userError) {
+      setError(userError.message || "Unable to verify your account right now.");
+      setCreating(false);
+      return;
+    }
+
     if (!user) {
       setError("You need to be signed in to create an organization.");
       setCreating(false);
