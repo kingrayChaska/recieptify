@@ -1,11 +1,13 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Download, Loader2 } from "lucide-react";
 import type { ReceiptTemplate, ReceiptTemplateData } from "@/lib/supabase/types";
 import { ModernTemplate } from "./templates/ModernTemplate";
 import { MinimalTemplate } from "./templates/MinimalTemplate";
 import { ClassicTemplate } from "./templates/ClassicTemplate";
+
+const THEME_COLORS = ["#22c55e", "#3b82f6", "#8b5cf6", "#f59e0b", "#ef4444", "#ec4899", "#14b8a6"];
 
 interface ReceiptPreviewProps {
   template: ReceiptTemplate;
@@ -21,6 +23,14 @@ const TEMPLATE_MAP = {
 export const ReceiptPreview = ({ template, data }: ReceiptPreviewProps) => {
   const previewRef = useRef<HTMLDivElement>(null);
   const [exporting, setExporting] = useState(false);
+  const [accentColor, setAccentColor] = useState("#22c55e");
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const rootColor = getComputedStyle(document.documentElement).getPropertyValue("--brand").trim();
+    setAccentColor(rootColor || "#22c55e");
+  }, []);
 
   const handleDownload = async () => {
     if (!previewRef.current) return;
@@ -60,10 +70,26 @@ export const ReceiptPreview = ({ template, data }: ReceiptPreviewProps) => {
         </button>
       </div>
 
+      <div className="flex flex-wrap items-center gap-2">
+        {THEME_COLORS.map((color) => (
+          <button
+            key={color}
+            type="button"
+            onClick={() => setAccentColor(color)}
+            className="h-8 w-8 rounded-full border-2 transition-transform hover:scale-110"
+            style={{
+              backgroundColor: color,
+              borderColor: accentColor === color ? "#111827" : "transparent",
+            }}
+            aria-label={`Select ${color} accent`}
+          />
+        ))}
+      </div>
+
       {/* Mobile-sized preview container */}
       <div className="flex justify-center">
         <div className="w-[320px] transition-all duration-300" ref={previewRef}>
-          <Template data={data} />
+          <Template data={data} accentColor={accentColor} />
         </div>
       </div>
     </div>

@@ -17,7 +17,7 @@ const dmMono = DM_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Recieptify — Smart Invoice & Receipt Generator",
+  title: "Invoice.Me — Smart Invoice & Receipt Generator",
   description: "Create beautiful invoices and receipts in seconds.",
 };
 

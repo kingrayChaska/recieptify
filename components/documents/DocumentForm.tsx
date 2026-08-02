@@ -14,6 +14,7 @@ import {
 import type { DocumentData, LineItem } from "@/lib/supabase/types";
 import { DocumentPreview } from "./DocumentPreview";
 import { v4 as uuidv4 } from "uuid";
+import { useNotifications } from "@/hooks/useNotifications";
 
 interface DocumentFormProps {
   type: "invoice" | "receipt";
@@ -37,6 +38,7 @@ const emptyItem = (): LineItem => ({
 export const DocumentForm = ({ type }: DocumentFormProps) => {
   const router = useRouter();
   const { createDocument } = useDocuments();
+  const { addNotification } = useNotifications();
   const supabase = createClient();
 
   const [template, setTemplate] = useState<"minimal" | "modern" | "classic">(
@@ -147,7 +149,12 @@ export const DocumentForm = ({ type }: DocumentFormProps) => {
     }
 
     try {
-      await createDocument(type, documentData, logoUrl, template);
+      const doc = await createDocument(type, documentData, logoUrl, template);
+      addNotification(
+        type === "invoice" ? "invoice_created" : "receipt_created",
+        type === "invoice" ? "Invoice created" : "Receipt created",
+        `${type === "invoice" ? "Invoice" : "Receipt"} #${doc.data.documentNumber} for ${doc.data.customerName} — ${new Intl.NumberFormat("en", { style: "currency", currency: doc.data.currency }).format(doc.data.total)} was saved successfully.`,
+      );
       router.push(
         type === "invoice" ? "/dashboard/invoices" : "/dashboard/receipts",
       );

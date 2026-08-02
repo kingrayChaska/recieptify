@@ -100,7 +100,7 @@ export default function RegisterPage() {
     <div className="min-h-screen bg-base flex items-center justify-center px-4">
       <div className="w-full max-w-sm animate-fade-in">
         <div className="mb-8 text-center">
-          <Link href="/" className="font-extrabold text-2xl tracking-tight">Recieptify</Link>
+          <Link href="/" className="font-extrabold text-2xl tracking-tight">Invoice.Me</Link>
           <p className="text-muted text-sm mt-2">Create your free account</p>
         </div>
 

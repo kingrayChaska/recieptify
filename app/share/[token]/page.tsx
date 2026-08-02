@@ -40,7 +40,7 @@ export default async function SharePage({ params }: SharePageProps) {
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-start py-10 px-4">
       <div className="w-full max-w-2xl">
         <div className="flex items-center justify-between mb-5">
-          <span className="font-extrabold text-lg tracking-tight">Recieptify</span>
+          <span className="font-extrabold text-lg tracking-tight">Invoice.Me</span>
           <span className="text-xs text-gray-400 bg-gray-100 px-3 py-1.5 rounded-full font-mono">
             Shared document
           </span>
@@ -150,7 +150,7 @@ export default async function SharePage({ params }: SharePageProps) {
             )}
 
             <div className="text-center text-xs text-gray-300 mt-6 pt-4 border-t border-gray-50">
-              Generated with Recieptify
+              Generated with Invoice.Me
             </div>
           </div>
         </div>

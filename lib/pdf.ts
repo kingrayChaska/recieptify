@@ -182,7 +182,7 @@ export const generatePDF = (
   doc.setTextColor(255, 255, 255);
   doc.setFontSize(8);
   doc.setFont("helvetica", "normal");
-  doc.text("Generated with Recieptify", pageWidth / 2, pageHeight - 4, { align: "center" });
+  doc.text("Generated with Invoice.Me", pageWidth / 2, pageHeight - 4, { align: "center" });
 
   return doc;
 };

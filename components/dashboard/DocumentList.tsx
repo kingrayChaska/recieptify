@@ -5,6 +5,7 @@ import { Download, Trash2, Share2, Search, Filter } from "lucide-react";
 import { formatCurrency, formatDate, cn } from "@/lib/utils";
 import { downloadPDF } from "@/lib/pdf";
 import { useDocuments } from "@/hooks/useDocuments";
+import { useNotifications } from "@/hooks/useNotifications";
 import type { DocumentData } from "@/lib/supabase/types";
 
 type Document = {
@@ -42,8 +43,8 @@ const StatusBadge = ({ status }: { status: string }) => {
 };
 
 export const DocumentList = ({ type }: DocumentListProps) => {
-  const { documents, loading, deleteDocument, generateShareLink } =
-    useDocuments();
+  const { documents, loading, deleteDocument, generateShareLink } = useDocuments();
+  const { addNotification } = useNotifications();
   const [search, setSearch] = useState("");
   const [copied, setCopied] = useState<string | null>(null);
   const [deleting, setDeleting] = useState<string | null>(null);
@@ -71,16 +72,29 @@ export const DocumentList = ({ type }: DocumentListProps) => {
       await navigator.clipboard.writeText(url);
       setCopied(doc.id);
       setTimeout(() => setCopied(null), 2000);
+      addNotification(
+        "share_generated",
+        "Share link copied",
+        `A shareable link for ${doc.type} #${doc.data.documentNumber} (${doc.data.customerName}) has been copied to your clipboard.`,
+      );
     } catch (err) {
       console.error(err);
     }
   };
 
   const handleDelete = async (id: string) => {
+    const doc = documents.find((d) => d.id === id);
     if (!confirm("Delete this document? This cannot be undone.")) return;
     setDeleting(id);
     try {
       await deleteDocument(id);
+      if (doc) {
+        addNotification(
+          "document_deleted",
+          "Document deleted",
+          `${doc.type === "invoice" ? "Invoice" : "Receipt"} #${doc.data.documentNumber} for ${doc.data.customerName} was permanently deleted.`,
+        );
+      }
     } catch (err) {
       console.error(err);
     }

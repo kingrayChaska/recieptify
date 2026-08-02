@@ -1,25 +1,25 @@
 import type { ReceiptTemplateData } from "@/lib/supabase/types";
 import { formatNaira } from "@/lib/utils";
 
-export const ModernTemplate = ({ data }: { data: ReceiptTemplateData }) => {
+export const ModernTemplate = ({ data, accentColor }: { data: ReceiptTemplateData; accentColor: string }) => {
   const fmt = (n: number) =>
     data.currency === "NGN" ? formatNaira(n) : `${data.currency} ${n.toFixed(2)}`;
 
   return (
     <div className="bg-white text-gray-900 w-full rounded-2xl overflow-hidden shadow-lg font-sans">
-      <div className="bg-emerald-500 px-6 py-5">
+      <div className="px-6 py-5" style={{ backgroundColor: accentColor }}>
         <div className="flex items-start justify-between">
           <div>
             {data.logoUrl && (
               <img src={data.logoUrl} alt="logo" className="h-8 w-auto object-contain mb-2" />
             )}
             <p className="text-white font-black text-xl tracking-wide">RECEIPT</p>
-            <p className="text-emerald-100 text-xs font-mono mt-0.5">#{data.receiptId}</p>
+            <p className="text-white/80 text-xs font-mono mt-0.5">#{data.receiptId}</p>
           </div>
           <div className="text-right">
             <p className="text-white font-bold text-sm">{data.businessName}</p>
-            {data.businessEmail && <p className="text-emerald-100 text-xs">{data.businessEmail}</p>}
-            {data.businessAddress && <p className="text-emerald-100 text-xs">{data.businessAddress}</p>}
+            {data.businessEmail && <p className="text-white/80 text-xs">{data.businessEmail}</p>}
+            {data.businessAddress && <p className="text-white/80 text-xs">{data.businessAddress}</p>}
           </div>
         </div>
       </div>
@@ -58,7 +58,7 @@ export const ModernTemplate = ({ data }: { data: ReceiptTemplateData }) => {
           <div className="flex justify-between text-gray-500">
             <span>Subtotal</span><span>{fmt(data.subtotal)}</span>
           </div>
-          <div className="flex justify-between font-black text-base text-emerald-600 pt-1 border-t border-gray-100">
+          <div className="flex justify-between font-black text-base pt-1 border-t border-gray-100" style={{ color: accentColor }}>
             <span>TOTAL</span><span>{fmt(data.total)}</span>
           </div>
         </div>
@@ -69,7 +69,7 @@ export const ModernTemplate = ({ data }: { data: ReceiptTemplateData }) => {
           </div>
         )}
 
-        <p className="text-center text-[10px] text-gray-300 pt-2">Generated with Recieptify</p>
+        <p className="text-center text-[10px] text-gray-300 pt-2">Generated with Invoice.Me</p>
       </div>
     </div>
   );

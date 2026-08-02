@@ -21,7 +21,7 @@ export const downloadReceiptPdf = async (receipt: Receipt) => {
 
   doc.setFontSize(8);
   doc.setFont("helvetica", "normal");
-  doc.text("Recieptify", W - 10, 12, { align: "right" });
+  doc.text("Invoice.Me", W - 10, 12, { align: "right" });
 
   // Merchant & amount
   doc.setTextColor(30, 30, 30);
@@ -76,7 +76,7 @@ export const downloadReceiptPdf = async (receipt: Receipt) => {
   // Footer
   doc.setFontSize(7);
   doc.setTextColor(200, 200, 200);
-  doc.text("Generated with Recieptify", W / 2, doc.internal.pageSize.getHeight() - 8, { align: "center" });
+  doc.text("Generated with Invoice.Me", W / 2, doc.internal.pageSize.getHeight() - 8, { align: "center" });
 
   const filename = `receipt-${receipt.merchant_name?.replace(/\s+/g, "-").toLowerCase() ?? receipt.id}-${receipt.date.split("T")[0]}.pdf`;
   doc.save(filename);

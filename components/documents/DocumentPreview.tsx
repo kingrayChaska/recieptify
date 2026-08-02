@@ -151,7 +151,7 @@ export const DocumentPreview = ({ data, type, template, logoUrl }: DocumentPrevi
             className="text-center text-[9px] mt-4 pt-3 border-t"
             style={{ borderColor: styles.accent + "20", color: styles.accent }}
           >
-            Generated with Recieptify
+            Generated with Invoice.Me
           </div>
         </div>
       </div>

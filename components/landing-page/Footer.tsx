@@ -33,7 +33,7 @@ export const Footer = () => {
           </div>
 
           <p className="text-xs text-white/20">
-            © 2026 Recieptify. All rights reserved.
+            © 2026 Invoice.Me. All rights reserved.
           </p>
         </div>
       </div>

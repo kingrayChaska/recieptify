@@ -82,6 +82,23 @@ create table if not exists public.organization_members (
 
 alter table public.organization_members enable row level security;
 
+create policy "Owners and admins can add members"
+  on public.organization_members for insert
+  with check (
+    auth.uid() = user_id
+    or auth.uid() in (
+      select o.owner_id
+      from public.organizations o
+      where o.id = organization_id
+    )
+    or auth.uid() in (
+      select om.user_id
+      from public.organization_members om
+      where om.organization_id = public.organization_members.organization_id
+        and om.role in ('owner', 'admin')
+    )
+  );
+
 create policy "Members can view org members"
   on public.organization_members for select
   using (auth.uid() = user_id or auth.uid() in (

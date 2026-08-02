@@ -58,7 +58,7 @@ export const Sidebar = () => {
     <div className="flex flex-col h-full">
       {/* Logo */}
       <div className="px-5 py-5 border-b border-[var(--border)]">
-        <span className="font-extrabold text-lg tracking-tight">Recieptify</span>
+        <span className="font-extrabold text-lg tracking-tight">Invoice.Me</span>
         <p className="text-[10px] text-muted mt-0.5">AI Expense Intelligence</p>
       </div>
 
