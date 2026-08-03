@@ -108,15 +108,21 @@ const CTAButtons = () => (
 // Background Orbs Component
 const BackgroundOrbs = () => (
   <>
-    <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-emerald-500/5 blur-[120px] pointer-events-none" />
-    <div className="absolute top-1/3 left-1/4 w-72 h-72 rounded-full bg-blue-500/5 blur-[80px] pointer-events-none" />
+    <div
+      className="absolute top-1/4 left-1/2 -translate-x-1/2 rounded-full bg-emerald-500/5 blur-[120px] pointer-events-none"
+      style={{
+        width: "min(600px, calc(100vw - 3rem))",
+        height: "min(600px, calc(100vw - 3rem))",
+      }}
+    />
+    <div className="absolute top-1/3 left-1/4 w-52 h-52 sm:w-72 sm:h-72 rounded-full bg-blue-500/5 blur-[80px] pointer-events-none" />
   </>
 );
 
 // Main Hero Component
 export const Hero = () => {
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center px-6 pt-24 pb-16 mesh grain">
+    <section className="relative min-h-screen flex flex-col items-center justify-center px-6 pt-24 pb-16 mesh grain overflow-hidden">
       <BackgroundOrbs />
 
       <div className="relative z-10 max-w-5xl mx-auto text-center">

@@ -21,10 +21,16 @@ export const metadata: Metadata = {
   description: "Create beautiful invoices and receipts in seconds.",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${syne.variable} ${dmMono.variable} antialiased`}>
+      <body
+        className={`${syne.variable} ${dmMono.variable} antialiased overflow-x-hidden`}
+      >
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
